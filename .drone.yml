@@ -4,34 +4,22 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker build -t pttg-openjdk8:$${DRONE_COMMIT_SHA} .
+      - docker build -t pttg-openjdk8 .
     when:
       event: [push, pull_request]
 
   image_to_quay:
     image: docker:17.09.1
-    secrets:
-      - docker_password
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
     commands:
-      - docker login -u="ukhomeofficedigital+drone" -p=$${DOCKER_PASSWORD} quay.io
-      - docker tag pttg-openjdk8:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/pttg-openjdk8:$${DRONE_COMMIT_SHA}
-      - docker tag pttg-openjdk8:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/pttg-openjdk8:latest
-      - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:$${DRONE_COMMIT_SHA}
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-openjdk8 quay.io/ukhomeofficedigital/pttg-openjdk8:build-$${DRONE_BUILD_NUMBER}
+      - docker tag pttg-openjdk8 quay.io/ukhomeofficedigital/pttg-openjdk8:latest
+      - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:build-$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:latest
     when:
       event: push
       branch: master
-
-  tagged_image_to_quay:
-    image: docker:17.09.1
-    secrets: [ docker_password ]
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - docker login -u="ukhomeofficedigital+drone" -p=$${DOCKER_PASSWORD} quay.io
-      - docker tag pttg-openjdk8:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/pttg-openjdk8:$${DRONE_TAG}
-      - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:$${DRONE_TAG}
-    when:
-      event: tag
