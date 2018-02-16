@@ -4,7 +4,7 @@ pipeline:
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
-      - docker build -t pttg-openjdk8 .
+      - docker build -t pttg-docker-openjdk8 .
     when:
       event: [push, pull_request]
 
@@ -16,10 +16,10 @@ pipeline:
       - docker_password
     commands:
       - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
-      - docker tag pttg-openjdk8 quay.io/ukhomeofficedigital/pttg-openjdk8:build-$${DRONE_BUILD_NUMBER}
-      - docker tag pttg-openjdk8 quay.io/ukhomeofficedigital/pttg-openjdk8:latest
-      - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:build-$${DRONE_BUILD_NUMBER}
-      - docker push quay.io/ukhomeofficedigital/pttg-openjdk8:latest
+      - docker tag pttg-docker-openjdk8 quay.io/ukhomeofficedigital/pttg-docker-openjdk8:build-$${DRONE_BUILD_NUMBER}
+      - docker tag pttg-docker-openjdk8 quay.io/ukhomeofficedigital/pttg-docker-openjdk8:latest
+      - docker push quay.io/ukhomeofficedigital/pttg-docker-openjdk8:build-$${DRONE_BUILD_NUMBER}
+      - docker push quay.io/ukhomeofficedigital/pttg-docker-openjdk8:latest
     when:
       event: push
       branch: master
