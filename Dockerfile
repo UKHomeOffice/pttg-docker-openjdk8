@@ -11,7 +11,7 @@ RUN yum update -y glibc && \
     yum update -y nss && \
     yum update -y bind-license
 
-RUN yum install openssl
+RUN yum install -y openssl
 
 WORKDIR /
 
