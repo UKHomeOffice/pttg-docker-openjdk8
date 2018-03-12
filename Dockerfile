@@ -11,6 +11,8 @@ RUN yum update -y glibc && \
     yum update -y nss && \
     yum update -y bind-license
 
+RUN apt-get update && apt-get install -y openssl
+
 WORKDIR /
 
 RUN groupadd -r ${GROUP} && \
