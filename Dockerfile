@@ -9,8 +9,9 @@ ARG VERSION
 
 RUN yum update -y glibc && \
     yum update -y nss && \
-    yum update -y bind-license \
-    yum update -y openssl
+    yum update -y bind-license
+
+RUN yum install openssl
 
 WORKDIR /
 
