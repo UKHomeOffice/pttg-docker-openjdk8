@@ -6,7 +6,7 @@ pipeline:
     commands:
       - docker build -t pttg-docker-openjdk8 .
     when:
-      event: [push, pull_request]
+      event: push
 
   image_to_quay:
     image: docker:17.09.1
