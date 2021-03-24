@@ -1,21 +1,19 @@
-FROM quay.io/ukhomeofficedigital/openjdk8:v1.8.0.141
+# Security patches etc. managed centrally
+# =======================================
+FROM quay.io/ukhomeofficedigital/centos-base:v0.5.15
 
-ENV USER pttg
-ENV GROUP pttg
-ENV NAME pttg-openjdk8
-ENV JAR_PATH build/libs
+# Install Open Java 8
+# ===================
 
-ARG VERSION
+# Set correct environment variables.
+ENV	HOME /root
+ENV	LANG en_US.UTF-8
+ENV	LC_ALL en_US.UTF-8
 
-RUN yum update -y glibc && \
-    yum update -y nss && \
-    yum update -y bind-license
-
-WORKDIR /
-
-RUN groupadd -r ${GROUP} && \
-    useradd -r -g ${GROUP} ${USER} -d /
-
-USER ${USER}
+RUN yum clean all && \
+    yum update -y && \
+    yum install -y java-1.8.0-openjdk-devel && \
+    yum clean all && \
+    rpm --rebuilddb
 
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk
